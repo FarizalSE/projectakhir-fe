@@ -1,0 +1,29 @@
+export const API_BASE_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000';
+
+export const ROLES = {
+  ADMIN: 'admin',
+  PETUGAS: 'petugas',
+  PENGAWAS: 'pengawas'
+};
+
+export const TRANSACTION_STATUS = {
+  PENDING: 'pending',
+  APPROVED: 'approved',
+  REJECTED: 'rejected'
+};
+
+export const WEAPON_CONDITIONS = [
+  'Excellent',
+  'Good',
+  'Fair',
+  'Poor',
+  'Damaged'
+];
+
+export const TRANSACTION_TYPES = [
+  'Issue',
+  'Return',
+  'Transfer',
+  'Maintenance',
+  'Disposal'
+];
