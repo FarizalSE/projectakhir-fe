@@ -2,19 +2,19 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../utils/constants";
 import { Edit, Trash2, Add } from "lucide-react";
-import EditSenjataModal from "../Modal/EditSenjataModal";
 import createAxiosJWT from "../utils/axiosInterceptor";
 import { refreshToken } from "../utils/auth";
 import useRefreshToken from "../utils/useRefreshToken";
-import TambahSenjataModal from "../Modal/TambahSenjataModal";
+import EditLaporanModal from "../Modal/EditLaporanModal";
+import TambahTransaksi from "../Modal/TambahTransaksiModal";
 
 const LaporanContent = () => {
   const [token, setToken] = useState("");
   const [expire, setExpire] = useState("");
   const [name, setName] = useState("");
-  const [showSenjataModal, setShowSenjataModal] = useState(false);
-  const [showAddSenjataModal, setShowAddSenjataModal] = useState(false);
-  const [selectedSenjata, setSelectedSenjata] = useState(null);
+  const [showTransactionModal, setShowTransactionModal] = useState(false);
+  const [showAddTransactionModal, setShowAddTransactionModal] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
   const [role, setRole] = useState("");
   const [email, setEmail] = useState("");
   const [userId, setUserId] = useState("");
@@ -32,6 +32,16 @@ const LaporanContent = () => {
       console.error("Gagal mengambil data senjata:", error);
     }
   };
+
+  const getTransactionById = async (id) => {
+    try {
+      const response = await axiosJWT.get(`${API_BASE_URL}/transaction/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error("Gagal mengambil data transaksi:", error);
+      throw error;
+    }
+  }
 
 
   // Ambil token dan data user saat komponen pertama kali dimuat
@@ -52,11 +62,11 @@ const LaporanContent = () => {
         <table className="table is-striped is-hoverable is-fullwidth">
           <thead>
             <tr>
-              <th>Nama Petugas {userId}</th>
-              <th>Jenis Transaksi</th>
               <th>Nomor Seri</th>
-              <th>Kondisi</th>
-              <th>Lokasi</th>
+              <th>Type</th>
+              <th>Jumlah</th>
+              <th>Tujuan</th>
+              <th>Gudang</th>
               <th>Status</th>
               <th>Aksi</th>
             </tr>
@@ -64,16 +74,27 @@ const LaporanContent = () => {
           <tbody>
             {transaction.map((item) => (
               <tr key={item.id}>
-                <td>{item.user?.name}</td>
-                <td>{item.type_transactions}</td>
                 <td>{item.weapon?.serialNum}</td>
-                <td>{item.weapon?.condition}</td>
+                <td>{item.type_transactions}</td>
+                <td>{item.amount}</td>
+                <td>{item.information}</td>
                 <td>{item.weapon?.location}</td>
                 <td>{item.status}</td>
                 <td>
                   <button
                     className="button is-small is-success mr-2"
                     title="Edit"
+                    onClick={ async () => {
+                    try {
+                      const transactionData = await getTransactionById(item.id);
+                      console.log("selected transaction :", transactionData);
+                      setSelectedTransaction(transactionData);
+                      setShowTransactionModal(true);
+                    } catch (error) {
+                      console.error("Gagal mengambil data senjata untuk edit:", error);
+                      navigate("/");
+                    }
+                  }}
                   >
                     <Edit size={16} />
                   </button>
@@ -88,10 +109,30 @@ const LaporanContent = () => {
             ))}
           </tbody>
         </table>
+        <EditLaporanModal
+          isOpen={showTransactionModal}
+          onClose={() => setShowTransactionModal(false)}
+          onSave={() => {
+            setShowTransactionModal(false);
+          }}
+          initialData={selectedTransaction}
+        />
         </div>
-
+        <TambahTransaksi
+                  isOpen={showAddTransactionModal}
+                  onClose={() => setShowAddTransactionModal(false)}
+                  onSave={() => {
+                    setShowAddTransactionModal(false);
+                    getTransactionById(); // Refresh data senjata setelah modal ditutup
+                  }}
+                  onAdd={(newTransaction) => {
+                    setTransaction((prev) => [...prev, newTransaction]);
+                    getTransactionById(); // Refresh data senjata setelah modal ditutup
+                  }
+                  }
+          />
       </div>
-      <button className="button btn-success" onClick={() => setShowAddSenjataModal(true)}>
+      <button className="button btn-success" onClick={() => setShowAddTransactionModal(true)}>
         Tambah Senjata
         <span className="icon is-small">
           <i className="fas fa-plus"></i>

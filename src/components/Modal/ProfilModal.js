@@ -1,7 +1,24 @@
-import React from 'react';
+import {useState, useEffect} from 'react';
 import BaseModal from './BaseModal';
+import { useNavigate } from 'react-router-dom';
+import { refreshToken } from '../utils/auth';
+import createAxiosJWT from '../utils/axiosInterceptor';
+import useRefreshToken from '../utils/useRefreshToken';
+import { API_BASE_URL } from '../utils/constants';
 
 const ProfileModal = ({ isOpen, onClose, user }) => {
+  const [name, setName] = useState("");
+  const [role, setRole] = useState("");
+  const [userId, setUserId] = useState("");
+  const [email, setEmail] = useState("");
+  const [expire, setExpire] = useState("");
+  const [token, setToken] = useState("");
+  const [akun, setAkun] = useState([]);
+
+  const navigate = useNavigate;
+  useRefreshToken(setToken, setName, setEmail, setRole, setUserId, setExpire);
+  const axiosJWT = createAxiosJWT(token, expire, setToken, setName, setEmail, setRole, setUserId, setExpire, navigate, refreshToken);
+
   return (
     <BaseModal
       isOpen={isOpen}
@@ -13,8 +30,9 @@ const ProfileModal = ({ isOpen, onClose, user }) => {
         </button>
       }
     >
-      <p><strong>Nama:</strong>scjkc</p>
-      <p><strong>Email:</strong>csjcsa</p>
+      <p><strong>Nama:</strong>{name}</p>
+      <p><strong>Email:</strong>{email}</p>
+      <p><strong>Role:</strong>{role}</p>
       {/* Tambahkan konten lain di sini */}
     </BaseModal>
   );

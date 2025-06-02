@@ -8,7 +8,7 @@ export const menuItems = [
     items: [
       { id: "dashboard", label: "Dashboard", icon: BarChart3 },
       { id: "inventori", label: "Inventori", icon: Package },
-      { id: "personel", label: "Personel", icon: Users },
+      { id: "admin", label: "Laporan Petugas", icon: Users },
       { id: "laporan", label: "Laporan", icon: FileText },
     ]
   },
@@ -24,7 +24,7 @@ export const menuItems = [
 export const routeMap = {
   dashboard: "/dashboardcontent",
   inventori: "/inventoricontent",
-  personel: "/personilcontent",
+  admin: "/personilcontent",
   laporan: "/laporancontent",
   pengaturan: "/pengaturancontent"
 };
