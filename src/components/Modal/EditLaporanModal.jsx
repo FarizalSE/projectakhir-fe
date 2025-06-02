@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { API_BASE_URL } from "../utils/constants";
 import createAxiosJWT from "../utils/axiosInterceptor";
 import { useNavigate } from "react-router-dom";
