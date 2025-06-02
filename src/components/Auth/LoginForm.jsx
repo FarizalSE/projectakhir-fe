@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../utils/constants.js';
-import Footer from '../Footer/Footer.js';
-import { useAuth } from '../../contexts/AuthContext.js';
+import Footer from '../Footer/Footer.jsx';
+import { useAuth } from '../../contexts/AuthContext.jsx';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');

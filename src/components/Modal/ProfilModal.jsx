@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { refreshToken } from '../utils/auth';
 import createAxiosJWT from '../utils/axiosInterceptor';
 import useRefreshToken from '../utils/useRefreshToken';
-import { API_BASE_URL } from '../utils/constants';
 
 const ProfileModal = ({ isOpen, onClose, user }) => {
   const [name, setName] = useState("");
