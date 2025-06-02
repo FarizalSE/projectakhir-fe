@@ -3,13 +3,11 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../utils/constants.js';
 import Footer from '../Footer/Footer.jsx';
-import { useAuth } from '../../contexts/AuthContext.jsx';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
-  const { login } = useAuth();
 
   const userLogin = async (e) => {
     e.preventDefault();
@@ -17,7 +15,6 @@ const LoginForm = () => {
       if (email && password) {
         const response = await axios.post(`${API_BASE_URL}/login`, { email, password });
         console.log("Login sukses:", response.data);
-        login(response.data); // Assuming login function sets user context
         navigate('/dashboardcontent');
       } else {
         console.log("Email dan password wajib diisi");
