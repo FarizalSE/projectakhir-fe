@@ -12,7 +12,6 @@ import PengaturanContent from './components/Content/PengaturanContent';
 
 function App() {
   return (
-    <BrowserRouter>
       <Routes>
         {/* Auth Routes */}
         <Route path="/" element={<LoginForm />} />
@@ -35,7 +34,6 @@ function App() {
           <Dashboard><PengaturanContent /></Dashboard>
         } />
       </Routes>
-    </BrowserRouter>
   );
 }
 
